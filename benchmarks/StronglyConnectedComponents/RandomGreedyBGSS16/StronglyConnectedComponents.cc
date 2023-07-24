@@ -44,7 +44,6 @@ double StronglyConnectedComponents_runner(Graph& G, commandLine P) {
   std::cout << "### n: " << G.n << std::endl;
   std::cout << "### m: " << G.m << std::endl;
   std::cout << "### Params: -beta = " << beta << std::endl;
-  std::cout << "### ------------------------------------" << std::endl;
 
   if (P.getOption("-s")) {
     std::cout << "SCC should be run on a directed graph;" << std::endl;
@@ -60,6 +59,7 @@ double StronglyConnectedComponents_runner(Graph& G, commandLine P) {
   }
 
   std::cout << "### Running Time: " << tt << std::endl;
+  std::cout << "### ------------------------------------" << std::endl;
   return tt;
 }
 }  // namespace gbbs

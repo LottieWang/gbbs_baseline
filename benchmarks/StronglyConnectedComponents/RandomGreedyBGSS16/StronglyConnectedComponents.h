@@ -209,8 +209,10 @@ inline sequence<label_type> StronglyConnectedComponents(Graph& GA, double beta =
   });
 
   auto P = parlay::random_shuffle(NZ);
+  #ifdef DEBUG
   std::cout << "Filtered: " << zero.size()
             << " vertices. Num remaining = " << P.size() << "\n";
+  #endif
 
   // Assign labels from [0...zero.size())
   parallel_for(0, zero.size(), [&] (size_t i)
@@ -261,9 +263,10 @@ inline sequence<label_type> StronglyConnectedComponents(Graph& GA, double beta =
   }
 
   auto Q = parlay::filter(P, [&](uintE v) { return !(labels[v] & TOP_BIT); });
+  #ifdef DEBUG
   std::cout << "After first round, Q = " << Q.size()
             << " vertices remain. Total done = " << (n - Q.size()) << "\n";
-
+  #endif
   while (finished < Q.size()) {
     timer rt;
     rt.start();
@@ -281,10 +284,12 @@ inline sequence<label_type> StronglyConnectedComponents(Graph& GA, double beta =
     auto centers = parlay::filter(
         centers_pre_filter, [&](uintE v) { return !(labels[v] & TOP_BIT); });
 
+    #ifdef DEBUG
     std::cout << "round = " << cur_round << " n_centers = " << centers.size()
               << " originally was " << vs_size
               << " centers. Total vertices remaining = "
               << (Q.size() - finished) << "\n";
+    #endif
 
     if (centers.size() == 0) continue;
 
@@ -320,17 +325,21 @@ inline sequence<label_type> StronglyConnectedComponents(Graph& GA, double beta =
     auto in_f = vertexSubset(n, std::move(centers));
     auto in_table =
         multi_search(GA, labels, bits, in_f, cur_label_offset, in_edges);
+    #ifdef DEBUG
     std::cout << "Finished in search"
               << "\n";
+    #endif
     ins.stop(); ins.next("insearch time");
 
     timer outs; outs.start();
     auto out_f = vertexSubset(n, std::move(centers_2));
     auto out_table = multi_search(GA, labels, bits, out_f, cur_label_offset);
+    #ifdef DEBUG
     std::cout << "in_table, m = " << in_table.m << " ne = " << in_table.ne
               << "\n";
     std::cout << "out_table, m = " << out_table.m << " ne = " << out_table.ne
               << "\n";
+    #endif
     outs.stop(); outs.next("outsearch time");
 
     auto& smaller_t = (in_table.m <= out_table.m) ? in_table : out_table;

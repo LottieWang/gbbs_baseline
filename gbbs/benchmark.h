@@ -5,6 +5,12 @@
 #include "graph_io.h"
 
 #define run_app(G, APP, mutates, rounds)    \
+  if (mutates) {                            \
+    auto G_copy = G;                        \
+    APP(G_copy, P);                         \
+  } else {                                  \
+    APP(G, P);                              \
+  }                                         \
   double total_time = 0.0;                  \
   for (size_t r = 0; r < rounds; r++) {     \
     if (mutates) {                          \
