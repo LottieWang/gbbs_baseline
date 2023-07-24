@@ -104,6 +104,11 @@ read_unweighted_asymmetric_graph(
     const char* fname, bool mmap, bool binary, char* bytes = nullptr,
     size_t bytes_size = std::numeric_limits<size_t>::max());
 
+asymmetric_graph<asymmetric_vertex, gbbs::empty>
+read_unweighted_asymmetric_graph_from_bin(
+    const char* fname, bool mmap, bool binary, char* bytes = nullptr,
+    size_t bytes_size = std::numeric_limits<size_t>::max());
+
 std::tuple<char*, size_t> parse_compressed_graph(const char* fname, bool mmap);
 
 template <class weight_type>

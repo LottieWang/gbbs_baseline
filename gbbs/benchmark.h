@@ -124,14 +124,17 @@
         auto G = gbbs::gbbs_io::read_unweighted_symmetric_graph(iFile, mmap,   \
                                                                 binary);       \
         run_app(G, APP, mutates, rounds)                                       \
-      } else {                                                                 \
+      } else if (binary){                                                      \
+        auto G = gbbs::gbbs_io::read_unweighted_asymmetric_graph_from_bin(     \
+                                                    iFile, mmap, binary);      \
+        run_app(G, APP, mutates, rounds)                                       \
+      } else{                                                                  \
         auto G = gbbs::gbbs_io::read_unweighted_asymmetric_graph(iFile, mmap,  \
-                                                                 binary);      \
+                                                                binary);       \
         run_app(G, APP, mutates, rounds)                                       \
       }                                                                        \
     }                                                                          \
   }
-
 /* Macro to generate binary for unweighted graph applications that can ingest
  * only asymmetric graph inputs */
 #define generate_asymmetric_main(APP, mutates)                               \
@@ -146,9 +149,9 @@
       auto G = gbbs::gbbs_io::read_compressed_asymmetric_graph<gbbs::empty>( \
           iFile, mmap);                                                      \
       run_app(G, APP, mutates, rounds)                                       \
-    } else {                                                                 \
+    } else{                                                                  \
       auto G = gbbs::gbbs_io::read_unweighted_asymmetric_graph(iFile, mmap,  \
-                                                               binary);      \
+                                                                binary);     \
       run_app(G, APP, mutates, rounds)                                       \
     }                                                                        \
   }
