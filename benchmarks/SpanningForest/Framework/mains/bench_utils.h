@@ -73,7 +73,7 @@ bool run_multiple(Graph& G, size_t rounds, sequence<edge>& correct,
   double maxt = reduce(t, maxf);
   double med = median(t);
 
-  print_cpu_stats(name, rounds, med, mint, maxt, P);
+  // print_cpu_stats(name, rounds, med, mint, maxt, P);
   return 1;
 }
 

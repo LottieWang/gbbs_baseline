@@ -68,11 +68,11 @@ bool run_multiple(Graph& G, size_t rounds, sequence<parent>& correct,
 		  std::string name, commandLine& P, F test) {
   std::vector<double> t = repeat(G, rounds, correct, test, P);
 
-  double mint = reduce(t, minf);
-  double maxt = reduce(t, maxf);
-  double med = median(t);
+  // double mint = reduce(t, minf);
+  // double maxt = reduce(t, maxf);
+  // double med = median(t);
 
-  print_cpu_stats(name, rounds, med, mint, maxt, P);
+  // print_cpu_stats(name, rounds, med, mint, maxt, P);
   return 1;
 }
 

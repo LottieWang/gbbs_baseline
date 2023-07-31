@@ -106,7 +106,7 @@ double Benchmark_runner(Graph& G, commandLine P) {
   run_tests(G, rounds, P, correct, connectit::unite_rem_cas_find_atomic_split_split_atomic_one<Graph>,
     {
       connectit::unite_rem_cas_find_compress_split_atomic_one<Graph>,
-      connectit::unite_rem_cas_find_compress_halve_atomic_one<Graph>,
+      // connectit::unite_rem_cas_find_compress_halve_atomic_one<Graph>,
 
 //      connectit::unite_rem_cas_find_atomic_split_split_atomic_one<Graph>,
 //      connectit::unite_rem_cas_find_atomic_split_halve_atomic_one<Graph>,

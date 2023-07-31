@@ -20,8 +20,10 @@
       total_time += APP(G, P);              \
     }                                       \
   }                                         \
+  if (rounds >0){                           \
   auto time_per_iter = total_time / rounds; \
-  std::cout << "# time per iter: " << time_per_iter << "\n";
+  std::cout << "# time per iter: " << time_per_iter << "\n"; \
+  }                                         \
 
 /* Macro to generate binary for graph applications that read a graph (either
  * asymmetric or symmetric) and transform it into a COO (edge-array)
@@ -213,11 +215,11 @@
     if (compressed) {                                                          \
       auto G = gbbs::gbbs_io::read_compressed_symmetric_graph<gbbs::empty>(    \
           iFile, mmap);                                                        \
-      run_app(G, APP, mutates, 1)                                              \
+      run_app(G, APP, mutates, 0)                                              \
     } else {                                                                   \
       auto G =                                                                 \
           gbbs::gbbs_io::read_unweighted_symmetric_graph(iFile, mmap, binary); \
-      run_app(G, APP, mutates, 1)                                              \
+      run_app(G, APP, mutates, 0)                                              \
     }                                                                          \
   }
 
