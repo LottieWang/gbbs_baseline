@@ -273,7 +273,7 @@ inline sequence<label_type> StronglyConnectedComponents(Graph& GA, double beta =
       hd.stop();
       hd.next("big scc time");
       #ifdef BREAKDOWN
-      std::cout << "### first_round_time " << std::endl;
+      std::cout << "### first_round_time " << hd.total_time() << std::endl;
       #endif
     }
   }
