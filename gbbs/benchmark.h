@@ -115,6 +115,7 @@
     bool symmetric = P.getOptionValue("-s");                                   \
     bool compressed = P.getOptionValue("-c");                                  \
     bool binary = P.getOptionValue("-b");                                      \
+    bool large = P.getOptionValue("-large");                                   \
     bool mmap = P.getOptionValue("-m");                                        \
     size_t rounds = P.getOptionLongValue("-rounds", 3);                        \
     if (compressed) {                                                          \
@@ -133,7 +134,9 @@
                                                                 binary);       \
         run_app(G, APP, mutates, rounds)                                       \
       } else if (binary){                                                      \
-        auto G = gbbs::gbbs_io::read_unweighted_asymmetric_graph_from_bin(     \
+        auto G = (large) ? gbbs::gbbs_io::read_unweighted_asymmetric_graph(    \
+                                                    iFile, mmap, binary):      \
+        gbbs::gbbs_io::read_unweighted_asymmetric_graph_from_bin(              \
                                                     iFile, mmap, binary);      \
         run_app(G, APP, mutates, rounds)                                       \
       } else{                                                                  \
