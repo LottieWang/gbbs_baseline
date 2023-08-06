@@ -40,10 +40,8 @@ using K = uintE;
 using V = uintE;
 using T = std::tuple<K, V>;
 
-#ifdef BREAKDOWN
 float multi_search_time;
 float table_resize_time;
-#endif
 // hash32 is sufficient
 struct hash_kv {
   uint64_t operator()(const K& k) { return parlay::hash64(k); }
@@ -150,9 +148,7 @@ inline gbbs::resizable_table<K, V, hash_kv> multi_search(Graph& GA,
     frontier = std::move(output);
     rd++;
   }
-  #ifdef BREAKDOWN
   table_resize_time += tablet.total_time();
-  #endif
   return table;
 }
 
@@ -198,10 +194,8 @@ inline sequence<bool> first_search(Graph& GA, L& labels, uintE start,
 
 template <class Graph>
 inline sequence<label_type> StronglyConnectedComponents(Graph& GA, double beta = 1.5) {
-  #ifdef BREAKDOWN
   multi_search_time = 0;
   table_resize_time = 0;
-  #endif
   timer initt;
   initt.start();
   size_t n = GA.n;
@@ -234,9 +228,7 @@ inline sequence<label_type> StronglyConnectedComponents(Graph& GA, double beta =
 
   initt.stop();
   initt.next("init");
-  #ifdef BREAKDOWN
   std::cout << "### init_time " <<initt.total_time() << std::endl;
-  #endif
 
   // Run the first search (BFS)
   {
@@ -272,9 +264,7 @@ inline sequence<label_type> StronglyConnectedComponents(Graph& GA, double beta =
       label_offset += 1;
       hd.stop();
       hd.next("big scc time");
-      #ifdef BREAKDOWN
       std::cout << "### first_round_time " << hd.total_time() << std::endl;
-      #endif
     }
   }
 
@@ -333,9 +323,7 @@ inline sequence<label_type> StronglyConnectedComponents(Graph& GA, double beta =
       });
       ft.stop();
       ft.next("first round time");
-      #ifdef BREAKDOWN
       multi_search_time += ft.total_time();
-      #endif
       continue;
     }
 
@@ -360,9 +348,7 @@ inline sequence<label_type> StronglyConnectedComponents(Graph& GA, double beta =
               << "\n";
     #endif
     outs.stop(); outs.next("outsearch time");
-    #ifdef BREAKDOWN
     multi_search_time += ins.total_time() + outs.total_time();
-    #endif
 
     auto& smaller_t = (in_table.m <= out_table.m) ? in_table : out_table;
     auto& larger_t = (in_table.m > out_table.m) ? in_table : out_table;
@@ -398,10 +384,8 @@ inline sequence<label_type> StronglyConnectedComponents(Graph& GA, double beta =
   parallel_for(0, labels.size(), [&] (size_t i) {
     labels[i] = (labels[i] & VAL_MASK) - 1;
   });
-  #ifdef BREAKDOWN
   std::cout << "### multi_search time " << multi_search_time - table_resize_time << std::endl;
   std::cout << "### hash table resize time " << table_resize_time << std::endl;
-  #endif
   return labels;
 }
 
