@@ -23,7 +23,7 @@ declare src=10012
 declare rounds=3
 declare numactl="numactl -i all"
 
-mkdir -p ${datadir}
+mkdir -p ${datadir} 
 mkdir -p ${graphdir}
 
 # make the bench if necessary
