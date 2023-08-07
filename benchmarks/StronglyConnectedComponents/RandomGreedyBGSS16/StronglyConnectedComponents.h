@@ -196,6 +196,8 @@ template <class Graph>
 inline sequence<label_type> StronglyConnectedComponents(Graph& GA, double beta = 1.5) {
   multi_search_time = 0;
   table_resize_time = 0;
+  float first_round_time = 0;
+  bool set_first = false;
   timer initt;
   initt.start();
   size_t n = GA.n;
@@ -249,6 +251,7 @@ inline sequence<label_type> StronglyConnectedComponents(Graph& GA, double beta =
 
 
     if (!(labels[start] & TOP_BIT)) {
+      set_first = true;
       auto in_visits = first_search(GA, labels, start, label_offset, in_edges);
       auto out_visits = first_search(GA, labels, start, label_offset);
       size_t label = label_offset;
@@ -265,6 +268,9 @@ inline sequence<label_type> StronglyConnectedComponents(Graph& GA, double beta =
       hd.stop();
       hd.next("big scc time");
       std::cout << "### first_round_time " << hd.total_time() << std::endl;
+    }else{
+      hd.stop();
+      first_round_time += hd.total_time();
     }
   }
 
@@ -323,7 +329,11 @@ inline sequence<label_type> StronglyConnectedComponents(Graph& GA, double beta =
       });
       ft.stop();
       ft.next("first round time");
-      multi_search_time += ft.total_time();
+      if (!set_first){
+        std::cout << "### first_round_time " << ft.total_time() +first_round_time << std::endl;
+      }else{
+        multi_search_time += ft.total_time();
+      }
       continue;
     }
 
